@@ -1,10 +1,10 @@
-[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=DrPaulValle/MSFBP0)
+[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/)
 
-# Práctica 0 — Modelo de mecánica pulmonar de segundo orden
+# Práctica 3 — Modelado y control del sistema musculoesquelético
 
-Repositorio académico de la asignatura **Modelado de Sistemas Fisiológicos**, correspondiente al programa de **Ingeniería Biomédica** del Tecnológico Nacional de México / Instituto Tecnológico de Tijuana. Esta práctica introductoria integra modelado matemático, analogías eléctricas de sistemas fisiológicos, análisis temporal y de estabilidad, diseño de controladores PID, simulación computacional y comprobación experimental.
+Repositorio académico de la asignatura **Modelado de Sistemas Fisiológicos**, correspondiente al programa de **Ingeniería Biomédica** del Tecnológico Nacional de México / Instituto Tecnológico de Tijuana. Esta práctica integra modelado matemático, analogías eléctricas de sistemas fisiológicos, análisis temporal y de estabilidad, diseño de controladores PID y verificación mediante simulación computacional.
 
-El caso de estudio representa la **mecánica pulmonar** mediante un circuito **RLC de segundo orden**. Se busca reproducir y comparar la respuesta de la presión alveolar $P_A(t)$ ante diferentes señales de presión aplicadas en la apertura de las vías respiratorias $P_{ao}(t)$, tanto en lazo abierto como en lazo cerrado.
+El caso de estudio representa el **comportamiento mecánico simplificado del sistema musculoesquelético** mediante un conjunto de elementos contráctiles, elásticos y viscosos. Se busca reproducir y comparar la respuesta de un individuo sano (**control**) frente a un caso simulado de **atrofia muscular**, modificando la resistencia equivalente del modelo y proponiendo una estrategia de control *in silico* para reducir las diferencias entre ambas respuestas.
 
 **Docente:** Dr. Paul Antonio Valle Trujillo  
 **Correo:** paul.valle@tectijuana.edu.mx  
@@ -12,7 +12,7 @@ El caso de estudio representa la **mecánica pulmonar** mediante un circuito **R
 **Institución:** Tecnológico Nacional de México / Instituto Tecnológico de Tijuana  
 **Asignatura:** Modelado de Sistemas Fisiológicos  
 **Programa:** Ingeniería Biomédica  
-**Estudiante:** Nombre completo · Número de control · correo@tijuana.tecnm.mx
+**Estudiante:** Martínez Lozano Pedro Damián · 23212806 · 23212806@tectijuana.edu.mx
 
 **Repositorio de la asignatura:** https://github.com/DrPaulValle/MSF-IBF1020  
 **Sede:** Blvd. Alberto Limón Padilla s/n, Tijuana, C. P. 22454, B. C., México.
@@ -32,7 +32,7 @@ El caso de estudio representa la **mecánica pulmonar** mediante un circuito **R
 8. [Implementación en MATLAB, Simulink y Simscape](#matlab)
 9. [Control en lazo cerrado y sintonización PID](#pid)
 10. [Reproducción en Python](#python)
-11. [Controlador analógico y laboratorio](#laboratorio)
+11. [Diagrama biológico e interpretación fisiológica](#biologico)
 12. [Resultados y verificación cruzada](#resultados)
 13. [Flujo de trabajo](#flujo)
 14. [Actividades del estudiante](#actividades)
@@ -46,13 +46,13 @@ El caso de estudio representa la **mecánica pulmonar** mediante un circuito **R
 <a id="resumen"></a>
 ## Resumen
 
-La práctica tiene como propósito **reproducir un procedimiento completo de modelado, análisis, simulación y control** de un sistema fisiológico utilizando resultados y materiales de referencia. La mecánica del sistema respiratorio se aproxima mediante una resistencia $R$, una inertancia $L$ y una compliancia $C$, representadas por un circuito eléctrico de segundo orden. A partir de las leyes de Kirchhoff se obtiene un modelo integro-diferencial, su función de transferencia y una representación equivalente mediante ecuaciones diferenciales ordinarias de primer orden.
+La práctica tiene como propósito **reproducir un procedimiento de modelado, análisis, simulación y control** aplicado a un compartimento musculoesquelético. El modelo combina la fuerza generada por un elemento contráctil activo, un amortiguador viscoso y dos elementos elásticos. Mediante la **analogía fuerza–voltaje**, sus propiedades mecánicas se representan con resistencias y capacitancias eléctricas.
 
-Se estudian el error en estado estacionario y la estabilidad del modelo a través de sus polos. Posteriormente se aplican cuatro entradas de referencia —escalón, pulso, rampa y senoide— y se contrastan tres implementaciones en MATLAB/Simulink/Simscape. Se incorpora un **controlador PID con retroalimentación negativa**, cuyas ganancias se sintonizan a partir de criterios explícitos de tiempo de establecimiento y sobreimpulso. Los resultados se reproducen mediante Python y se comparan con la construcción física del circuito y las mediciones registradas en el Laboratorio de Electrónica.
+Se analizan dos condiciones: un individuo sano (**control**) y un caso simulado de atrofia muscular (**caso**). La diferencia entre ambos se introduce modificando la resistencia equivalente $R$, y se compara su respuesta a una entrada de fuerza. Posteriormente se incorpora un **controlador PID con retroalimentación** y se estudia si es posible reducir el error entre la respuesta del caso y la respuesta de referencia del individuo sano.
 
-Esta es una **práctica de reproducción y verificación**: se espera que el estudiante explique los resultados suministrados, identifique la correspondencia entre representaciones y distinga claramente cualquier aporte o modificación propia.
+Las representaciones a verificar son el modelo matemático, la función de transferencia en Simulink, el circuito en Simscape Electrical y su reproducción mediante Python. Esta práctica se desarrolla **exclusivamente mediante experimentación *in silico***: el controlador constituye una estrategia académica de simulación y **no una intervención terapéutica**.
 
-**Palabras clave:** circuito RLC; controlador PID; mecánica pulmonar; modelado de sistemas fisiológicos; MATLAB; Simulink; Simscape Electrical; Python; simulación *in silico*; instrumentación electrónica.
+**Palabras clave:** sistema musculoesquelético; atrofia muscular; analogía fuerza–voltaje; resistencia viscosa; compliancia; función de transferencia; controlador PID; MATLAB; Simulink; Simscape Electrical; Python.
 
 [Volver al contenido](#contenido)
 
@@ -63,24 +63,23 @@ Esta es una **práctica de reproducción y verificación**: se espera que el est
 
 ### Competencia a desarrollar
 
-Comprender los conceptos básicos de Ingeniería de Control, la respuesta temporal y los criterios de estabilidad mediante la reproducción y verificación de un modelo matemático de segundo orden aplicado a la mecánica pulmonar. La práctica permite familiarizarse con las herramientas computacionales, los instrumentos de laboratorio y los mecanismos de documentación empleados en actividades posteriores.
+Modelizar sistemas fisiológicos mediante analogías entre sistemas físicos, ecuaciones diferenciales y funciones de transferencia para analizar su comportamiento dinámico y diseñar estrategias de control mediante técnicas de control clásico. En particular, comparar la respuesta de un individuo sano con un caso simulado de atrofia muscular y evaluar una estrategia de control *in silico* orientada a reducir las diferencias entre ambas respuestas.
 
 ### Objetivo general
 
-Reproducir y verificar el modelo de segundo orden de la mecánica pulmonar mediante su formulación matemática, implementación computacional, control con retroalimentación y emulación experimental, comparando las respuestas obtenidas ante señales de entrada previamente definidas.
+Modelar y simular un sistema musculoesquelético simplificado mediante su representación mecánica y electroequivalente, identificar las diferencias dinámicas entre las condiciones de control y caso, y evaluar una estrategia de control PID utilizando MATLAB/Simulink y Python.
 
 ### Objetivos específicos
 
-- Identificar la entrada, la salida, el flujo de aire y los parámetros del circuito equivalente.
-- Obtener la función de transferencia del sistema a partir de las leyes de Kirchhoff y la transformada de Laplace.
-- Formular las ecuaciones integro-diferenciales y su representación equivalente como sistema de ecuaciones diferenciales ordinarias lineales de primer orden.
-- Determinar el error en estado estacionario para una entrada escalón y analizar la estabilidad mediante los polos de la planta.
-- Simular el modelo con ecuaciones integro-diferenciales, función de transferencia y componentes de Simscape Electrical.
-- Comparar las respuestas ante escalón, pulso, rampa y señal sinusoidal.
-- Implementar un controlador PID y sintonizar sus ganancias para cumplir los criterios de desempeño establecidos.
-- Reproducir las respuestas de lazo abierto y lazo cerrado mediante MATLAB y Python.
-- Construir y evaluar el circuito equivalente y el controlador analógico en el laboratorio.
-- Documentar los resultados numéricos y experimentales en un repositorio de GitHub.
+- Identificar la fuerza aplicada, la fuerza contráctil, la amortiguación viscosa, las compliancias y los desplazamientos del modelo.
+- Construir la analogía fuerza–voltaje y verificar las conexiones eléctricas equivalentes.
+- Formular las ecuaciones de equilibrio y obtener la función de transferencia del sistema.
+- Analizar el error en estado estacionario, los polos y la estabilidad para control y caso.
+- Implementar el sistema por ecuaciones, función de transferencia y Simscape Electrical.
+- Comparar las respuestas ante una entrada impulso unitario en $t\in[0,10]$ s.
+- Incorporar un controlador PID y registrar las ganancias $k_P$, $k_I$ y $k_D$ obtenidas con **Tune**.
+- Reproducir las respuestas en Python y contrastarlas con las de MATLAB/Simulink.
+- Relacionar los elementos del modelo con sus estructuras musculoesqueléticas y documentar los resultados en GitHub.
 
 [Volver al contenido](#contenido)
 
@@ -89,15 +88,15 @@ Reproducir y verificar el modelo de segundo orden de la mecánica pulmonar media
 <a id="temario"></a>
 ## Relación con el temario
 
-La práctica integra contenidos correspondientes a tres unidades de la asignatura **Modelado de Sistemas Fisiológicos (IBF-1020)**:
+La práctica retoma conceptos de tres áreas de la asignatura **Modelado de Sistemas Fisiológicos (IBF-1020)**:
 
 | Unidad | Área | Contenidos aplicados |
 |---|---|---|
-| I | Sistemas de control retroalimentados | Elementos del sistema de control, diagramas de bloques, respuesta ante distintas entradas, análisis de error y criterios de estabilidad |
-| II | Modelado matemático | Analogía circuito–sistema respiratorio, leyes de Kirchhoff, modelo de segundo orden y función de transferencia |
-| III | Controladores | Tipos de controladores, diseño del PID y sintonización de ganancias |
+| I | Sistemas de control retroalimentados | Comparación de respuestas control/caso, definición del error y retroalimentación |
+| II | Modelado matemático | Analogía fuerza–voltaje, relaciones constitutivas, equilibrio mecánico y función de transferencia |
+| III | Controladores | Control PID, sintonización de ganancias y análisis de respuesta en lazo cerrado |
 
-El enfoque combina **Ingeniería de Control, Electrónica Analógica, Ciencias de la Computación y Fisiología**, de acuerdo con la competencia general de la asignatura.
+El enfoque integra **Ingeniería de Control, Electrónica, Ciencias de la Computación y Fisiología Musculoesquelética**, vinculando propiedades de tejidos y tendones con un modelo dinámico simplificado.
 
 [Volver al contenido](#contenido)
 
@@ -106,30 +105,42 @@ El enfoque combina **Ingeniería de Control, Electrónica Analógica, Ciencias d
 <a id="analogia"></a>
 ## Modelo físico y analogía eléctrica
 
-El sistema respiratorio se aproxima mediante un circuito RLC: la resistencia representa la oposición al flujo de aire en las vías respiratorias, el tejido pulmonar y la pared torácica; la inductancia representa la inertancia; y la capacitancia representa la compliancia, es decir, la capacidad de almacenar volumen ante cambios de presión.
+El modelo mecánico presentado en la **Figura 5.3** del instructivo contiene un elemento contráctil que genera la fuerza $F_0(t)$, un amortiguador viscoso $R$ y dos elementos elásticos identificados mediante las compliancias $C_p$ y $C_s$. La fuerza transmitida al exterior es $F(t)$.
 
-| Símbolo | Equivalente eléctrico | Interpretación fisiológica |
+La fuerza activa se relaciona con la aplicada mediante:
+
+$$F_0(t)=\alpha F(t),\qquad 0<\alpha<1.$$
+
+El desplazamiento del amortiguador es $x(t)-x_1(t)$, por lo que la velocidad relativa es:
+
+$$\frac{d}{dt}\big[x(t)-x_1(t)\big].$$
+
+| Símbolo mecánico | Equivalente eléctrico | Interpretación fisiológica |
 |---|---|---|
-| $P_{ao}(t)$ | Voltaje de entrada | Presión aplicada en la apertura de las vías respiratorias |
-| $P_A(t)$ | Voltaje de salida | Presión alveolar |
-| $Q(t)$ | Corriente | Flujo de aire |
-| $R$ | Resistencia | Resistencia equivalente al flujo de aire |
-| $L$ | Inductancia | Inertancia del flujo de aire |
-| $C$ | Capacitancia | Compliancia pulmonar equivalente |
+| $F(t)$ | Voltaje $V(t)$ | Fuerza transmitida por el sistema |
+| $F_0(t)$ | Fuente dependiente de voltaje | Fuerza del elemento contráctil activo |
+| $\dot x(t)$ | Corriente $I(t)$ | Velocidad mecánica |
+| $x(t)$ | Carga $q(t)$ | Desplazamiento |
+| $R$ | Resistencia | Amortiguación viscosa inherente al tejido |
+| $C_p$ | Capacitancia | Compliancia elástica de la rama paralela |
+| $C_s$ | Capacitancia | Compliancia elástica de la rama en serie |
+| Masa, si está presente | Inductancia | Inercia mecánica; el esquema básico no incluye masa explícita |
 
-### Parámetros para la emulación eléctrica
+**Regla de conversión del instructivo:** los elementos mecánicos en **paralelo** pueden corresponder a elementos eléctricos en **serie**, y viceversa; la identificación correcta de los desplazamientos y nodos de referencia es indispensable.
 
-| Parámetro | Valor | Unidad eléctrica | Unidad fisiológica análoga |
-|---|---:|---|---|
-| $R$ | $10\,000$ | $\Omega$ ($10\,\mathrm{k}\Omega$) | $\mathrm{cmH_2O}\cdot\mathrm{s}\cdot\mathrm{L}^{-1}$ |
-| $L$ | $1\times10^{-6}$ | $\mathrm{H}$ ($1\,\mu\mathrm{H}$) | $\mathrm{cmH_2O}\cdot\mathrm{s}^{2}\cdot\mathrm{L}^{-1}$ |
-| $C$ | $220\times10^{-6}$ | $\mathrm{F}$ ($220\,\mu\mathrm{F}$) | $\mathrm{L}\cdot(\mathrm{cmH_2O})^{-1}$ |
+### Parámetros de la emulación eléctrica
 
-Las variables de presión se expresan en $\mathrm{cmH_2O}$ en su interpretación fisiológica y en voltios durante la emulación; el flujo tiene dimensiones fisiológicas de $\mathrm{L/s}$ y se representa por una corriente eléctrica. Como referencia, $1\,\mathrm{cmH_2O}\approx98.067\,\mathrm{Pa}\approx0.736\,\mathrm{mmHg}$.
+| Parámetro | Control | Caso | Unidad |
+|---|---:|---:|---|
+| $F(t)$ | 1 | 1 | V (analogía eléctrica) |
+| $\alpha$ | 0.25 | 0.25 | Adimensional |
+| $C_s$ | 10 | 10 | µF |
+| $C_p$ | 100 | 100 | µF |
+| $R$ | 100 | 10 000 | Ω |
 
-> **Alcance de la analogía:** los valores anteriores corresponden a la implementación eléctrica de referencia. La correspondencia entre unidades eléctricas y fisiológicas conserva la estructura matemática, pero no debe interpretarse como una conversión numérica directa de unidades sin especificar factores de escala.
+**Condiciones del modelo:** de acuerdo con el instructivo, el individuo sano (**control**) se representa con una resistencia de **100 Ω**, mientras que el caso de atrofia muscular (**caso**) utiliza **10 kΩ**. Los demás parámetros permanecen constantes. El incremento de resistencia permite comparar el efecto del amortiguamiento sobre la respuesta dinámica.
 
-El instructivo incluye el diagrama del circuito bajo el nombre `pulmonar.pdf`; debe consultarse para verificar la topología exacta y los puntos de medición.
+> **Alcance de la analogía:** los valores de resistencia y capacitancia corresponden a la emulación eléctrica. La equivalencia entre fuerza, velocidad, desplazamiento y variables eléctricas mantiene la estructura del sistema, pero no implica convertir unidades fisiológicas en unidades eléctricas sin establecer escalas.
 
 [Volver al contenido](#contenido)
 
@@ -138,49 +149,50 @@ El instructivo incluye el diagrama del circuito bajo el nombre `pulmonar.pdf`; d
 <a id="modelo"></a>
 ## Formulación matemática
 
-### 1. Ecuaciones integro-diferenciales
+### 1. Relaciones constitutivas
 
-Aplicando la ley de voltajes de Kirchhoff y suponiendo que la presión alveolar se representa mediante el voltaje del capacitor, se obtiene
+En la analogía fuerza–voltaje, el amortiguamiento viscoso se expresa mediante una relación proporcional entre fuerza y velocidad relativa, mientras que los elementos de compliancia relacionan el desplazamiento con la fuerza elástica. Las ecuaciones deben establecerse respetando la distribución de ramas de la Figura 5.3.
 
-$$
-P_{ao}(t)=L\frac{dQ(t)}{dt}+RQ(t)+\frac{1}{C}\int Q(t)\,dt,
-$$
+Para el elemento viscoso:
 
-$$
-P_A(t)=\frac{1}{C}\int Q(t)\,dt.
-$$
+$$F_R(t)=R\,\frac{d}{dt}\left[x(t)-x_1(t)\right].$$
 
-La representación utilizada para construir el diagrama de bloques puede escribirse como
+Para un elemento elástico lineal de compliancia $C$, bajo una convención de signos consistente:
 
-$$
-Q(t)=\frac{1}{R}\left[P_{ao}(t)-L\frac{dQ(t)}{dt}-\frac{1}{C}\int Q(t)\,dt\right],
-$$
+$$x_C(t)=C\,F_C(t),\qquad F_C(t)=\frac{x_C(t)}{C}.$$
 
-$$
-P_A(t)=\frac{1}{C}\int Q(t)\,dt.
-$$
+El elemento activo satisface $F_0(t)=\alpha F(t)$. Al combinar estas relaciones con el equilibrio de fuerzas de las ramas se obtiene el modelo dinámico equivalente.
 
 ### 2. Función de transferencia
 
-Con condiciones iniciales nulas, al aplicar la transformada de Laplace se verifica que
+El instructivo define la función de transferencia con desplazamiento como salida:
 
-$$
-\boxed{G(s)=\frac{P_A(s)}{P_{ao}(s)}=\frac{1}{LCs^2+RCs+1}.}
-$$
+$$G(s)=\frac{X(s)}{F(s)}.$$
 
-El denominador es de segundo grado debido a los **dos elementos independientes de almacenamiento de energía**, la inductancia y la capacitancia.
+Para el **circuito electroequivalente suministrado en el archivo de Simulink**, el bloque `Transfer Fcn` presenta la siguiente función entre las variables eléctricas seleccionadas:
 
-### 3. Representación mediante EDO de primer orden
+$$\boxed{G_{\mathrm{archivo}}(s)=\frac{R C_s s+(1-\alpha)}{R(C_p+C_s)s+1}.}$$
 
-Definiendo las variables de estado $x_1(t)=P_A(t)$ y $x_2(t)=Q(t)$, el modelo anterior se expresa como
+Esta expresión se transcribe de los coeficientes de los bloques `F(t) Control` y `F(t) Caso` del archivo `.slx`; antes de identificarla sin ambigüedad con $X(s)/F(s)$ se debe comprobar el **punto exacto de medición** empleado en la salida del circuito.
 
-$$
-\begin{aligned}
-\dot x_1(t)&=\frac{x_2(t)}{C},\\
-\dot x_2(t)&=\frac{P_{ao}(t)-R x_2(t)-x_1(t)}{L},\\
-y(t)&=x_1(t).
-\end{aligned}
-$$
+### 3. Coeficientes y orden del modelo
+
+El bloque incluido en el archivo aportado usa:
+
+```matlab
+num = [100*10e-6 1-0.25];
+den = [100*(100e-6+10e-6) 1];
+```
+
+Los coeficientes anteriores ilustran la función de transferencia para **$R=100\,\Omega$ (control)**. Para el **caso** se utiliza $R=10\,000\,\Omega$, manteniendo los valores de $C_p$, $C_s$ y $\alpha$. La función representa una **dinámica de primer orden con un cero**.
+
+### 4. Representación diferencial asociada a la función de transferencia del archivo
+
+Si $u(t)$ es la entrada del bloque y $y(t)$ su salida, con condiciones iniciales nulas se obtiene:
+
+$$R(C_p+C_s)\,\dot y(t)+y(t)=RC_s\,\dot u(t)+(1-\alpha)u(t).$$
+
+Esta ecuación representa **el bloque de función de transferencia identificado**; su interpretación física depende de cómo se hayan conectado y escalado los puertos en el modelo.
 
 [Volver al contenido](#contenido)
 
@@ -191,60 +203,35 @@ $$
 
 ### 1. Error en estado estacionario
 
-Para una entrada escalón unitario,
+Para una entrada escalón de amplitud unitaria aplicada al bloque de función de transferencia, la ganancia estática es:
 
-$$
-P_{ao}(s)=\frac{1}{s},\qquad P_A(s)=G(s)\frac{1}{s}.
-$$
+$$G(0)=1-\alpha=0.75.$$
 
-Si se cumple la estabilidad requerida para aplicar el teorema del valor final,
+Si el sistema es estable, su salida final ante esa entrada es $0.75$ en las unidades de la salida del bloque. El error entre **esa entrada y esa salida**, si se comparan directamente, es:
 
-$$
-\lim_{t\to\infty}P_A(t)=\lim_{s\to0}sP_A(s)=G(0)=1.
-$$
+$$e_{ss}=1-G(0)=\alpha=0.25.$$
 
-Así, el error entre la entrada y la salida para **esa entrada escalón en lazo abierto** es
-
-$$
-\boxed{e_{ss}=\lim_{s\to0}sP_{ao}(s)[1-G(s)]=0.}
-$$
-
-Este resultado no garantiza seguimiento sin error ante entradas que varían continuamente, como una rampa o una senoide.
+**Distinción importante:** este cálculo corresponde al seguimiento de una entrada escalón de la función de transferencia mostrada, **no** al error clínico ni al error entre dos pacientes. En el sistema PID del instructivo, el error de comparación es $e(t)=x_{\rm control}(t)-x_{\rm caso}(t)$ y debe evaluarse con las señales efectivamente utilizadas en la retroalimentación.
 
 ### 2. Polos y estabilidad
 
-Los polos del sistema satisfacen
+El polo de la función de transferencia indicada es:
 
-$$
-LCs^2+RCs+1=0,
-$$
+$$\boxed{p=-\frac{1}{R(C_p+C_s)}.}$$
 
-$$
-\boxed{\lambda_{1,2}=\frac{-RC\pm\sqrt{(RC)^2-4LC}}{2LC}.}
-$$
+Para $R>0$ y $C_p,C_s>0$, el polo se ubica en el semiplano izquierdo del plano complejo, por lo que el bloque de primer orden es **asintóticamente estable**. Un aumento de $R$ acerca el polo al origen y produce una respuesta más lenta para una dinámica equivalente.
 
-Se deben sustituir los valores proporcionados, ubicar los polos en el plano complejo, verificar sus partes reales y relacionarlos con el comportamiento transitorio. Para $R,L,C>0$, todos los coeficientes del denominador son positivos, por lo que el sistema de segundo orden considerado tiene polos con parte real negativa.
+### 3. Comparación de condiciones
 
-Con los valores del circuito de referencia el discriminante $(RC)^2-4LC$ es positivo; se espera una **respuesta sobreamortiguada**, con polos reales negativos. Dado que sus escalas temporales son muy distintas, la simulación de transitorios extremadamente rápidos puede depender del solver empleado.
+Con los valores nominales de la tabla del instructivo:
 
-### 3. Predicción previa
+| Magnitud | Control ($R=100\,\Omega$) | Caso ($R=10\,\mathrm{k}\Omega$) |
+|---|---:|---:|
+| $\tau=R(C_p+C_s)$ | 0.011 s | 1.1 s |
+| Polo $p=-1/\tau$ | $-90.91\ \mathrm{s}^{-1}$ | $-0.9091\ \mathrm{s}^{-1}$ |
+| Ganancia en DC $G(0)$ | 0.75 | 0.75 |
 
-Antes de ejecutar las simulaciones, elaborar un **bosquejo cualitativo de la respuesta al escalón** a partir del orden, los polos, la estabilidad y el valor final. Conservar el bosquejo y compararlo con las respuestas computacionales.
-
-#### Ejemplo mínimo de verificación en MATLAB
-
-```matlab
-R = 10e3;       % ohm
-L = 1e-6;       % H
-C = 220e-6;     % F
-
-num = 1;
-den = [L*C, R*C, 1];
-G = tf(num,den);
-polos = pole(G)
-```
-
-Este código es ilustrativo; no sustituye los archivos y procedimientos de referencia proporcionados con la práctica.
+Los valores de esta tabla son **predicciones analíticas** calculadas de la expresión anterior con los parámetros nominales; no son mediciones de MATLAB. Para contrastarlos con la práctica es necesario que cada bloque de Simulink utilice su respectivo valor de resistencia.
 
 [Volver al contenido](#contenido)
 
@@ -253,18 +240,29 @@ Este código es ilustrativo; no sustituye los archivos y procedimientos de refer
 <a id="senales"></a>
 ## Señales de entrada y condiciones de simulación
 
-El intervalo nominal de simulación es $0\le t\le10\,\mathrm{s}$. Cuando la configuración numérica lo requiera, se establece un **paso máximo** de $\Delta t=10^{-3}\,\mathrm{s}$; este límite no garantiza por sí solo la resolución de todos los transitorios rápidos de la planta.
+La práctica solicita analizar la **respuesta al impulso unitario** en el intervalo:
 
-| Señal | Definición para la simulación | Propósito |
+$$0\le t\le10\,\mathrm{s}.$$
+
+| Elemento | Configuración o definición | Propósito |
 |---|---|---|
-| Escalón | $u(t)=1$ para $t\ge0$ | Examinar respuesta transitoria y valor final |
-| Pulso | Amplitud $1$, duración $1\,\mathrm{s}$ | Examinar la respuesta ante una perturbación de duración finita |
-| Rampa | $u(t)=t/10$ | Examinar seguimiento de una entrada creciente |
-| Senoide | $u(t)=\sin(\pi t/2)$ | Examinar respuesta a una excitación periódica |
+| Entrada $F(t)$ | Impulso unitario | Excitar la respuesta transitoria del sistema |
+| Condición control | $R=100\,\Omega$ en la tabla | Representar la respuesta de referencia |
+| Condición caso | $R=10\,\mathrm{k}\Omega$ en la tabla | Simular una alteración de amortiguamiento |
+| Sistema controlado | Caso con PID | Reducir la diferencia respecto al control |
+| Tiempo | 0–10 s | Comparar la evolución temporal |
 
-La entrada sinusoidal tiene amplitud $1\,\mathrm{V}$, frecuencia $f=250\,\mathrm{mHz}=0.25\,\mathrm{Hz}$ y frecuencia angular $\omega=2\pi f=\pi/2\,\mathrm{rad/s}$.
+El cuaderno MATLAB aportado contiene expresamente:
 
-Las cuatro señales se aplican a las diferentes representaciones matemáticas y computacionales, tanto en lazo abierto como en lazo cerrado cuando corresponde. En el laboratorio se utilizan **aproximaciones periódicas realizables**, cuyas configuraciones se presentan más adelante.
+```matlab
+clc; clear; close all; warning('off','all')
+open_system('sistema1.slx')
+parameters.StopTime = '10';
+parameters.Solver = 'ode15s';
+parameters.MaxStep = '1e-3';
+```
+
+El modelo `.slx` incluye un bloque etiquetado `Pulse Generator`. **La forma precisa de ese pulso debe comprobarse en los parámetros del bloque** antes de afirmar que coincide con un impulso de Dirac ideal. Las condiciones iniciales y la configuración concreta del generador deben documentarse junto con las gráficas.
 
 [Volver al contenido](#contenido)
 
@@ -273,23 +271,44 @@ Las cuatro señales se aplican a las diferentes representaciones matemáticas y 
 <a id="matlab"></a>
 ## Implementación en MATLAB, Simulink y Simscape
 
-Se reproducen tres representaciones equivalentes del sistema:
+Se contrastan las tres representaciones solicitadas:
 
 | Implementación | Descripción | Aspecto por verificar |
 |---|---|---|
-| Ecuaciones integro-diferenciales, Simulink | Bloques de suma, ganancias, derivación e integración | Consistencia con las leyes de Kirchhoff |
-| Función de transferencia, Simulink | Bloque de planta con $G(s)=1/(LCs^2+RCs+1)$ | Respuesta entrada–salida de segundo orden |
-| Circuito equivalente, Simscape Electrical | Componentes eléctricos $R$, $L$ y $C$ | Concordancia con las representaciones matemáticas |
+| Ecuaciones del sistema, Simulink | Bloques de ecuaciones y relaciones constitutivas | Consistencia con el equilibrio de fuerzas |
+| Función de transferencia, Simulink | Bloque dinámico derivado del modelo | Respuesta de control y caso para cada $R$ |
+| Circuito equivalente, Simscape Electrical | Resistencias, capacitancias y fuentes controladas | Concordancia de la analogía fuerza–voltaje |
 
-### Ejecución desde el cuaderno MATLAB
+### Archivos y señales identificados en los archivos aportados
 
-El cuaderno computacional suministrado permite ejecutar el modelo de Simulink y recuperar en el *Workspace* las señales de:
+En el archivo `sistema1.slx` aparecen los subsistemas **Control** y **Caso**, componentes de Simscape, bloques de función de transferencia y un bloque `PID Controller`. Los bloques `To Workspace` registran las señales:
 
-1. **Entrada:** $P_{ao}(t)$.
-2. **Salida de lazo abierto:** $P_A(t)$ sin controlador.
-3. **Salida de lazo cerrado:** $P_A(t)$ con controlador PID.
+1. **`F`**: señal de entrada $F(t)$.
+2. **`Fsx`**: respuesta del control.
+3. **`Fsy`**: respuesta del caso.
+4. **`PID`**: señal correspondiente al tratamiento/controlador.
 
-El estudiante debe revisar la conexión entre el cuaderno y Simulink, la extracción de datos y la generación de las cuatro figuras de respuesta en formato PDF. Los archivos de simulación se deben configurar siguiendo el instructivo y los modelos de referencia disponibles.
+El cuaderno `Martinez23212806.mlx` ejecuta:
+
+```matlab
+x1 = sim('sistema1.slx',parameters);
+plotsignals(x1.t,x1.F,x1.Fsx,x1.Fsy,x1.PID)
+```
+
+El cuaderno ejecuta el modelo **`sistema1.slx`** y mantiene los nombres de las variables utilizados para generar la gráfica.
+
+### Convención gráfica del cuaderno
+
+La función `plotsignals` utiliza las siguientes leyendas y colores:
+
+| Señal | Etiqueta del gráfico | Color |
+|---|---|---|
+| `F` | `$F(t)$` | Azul |
+| `Fsx` | `$F_s(t):Control$` | Amarillo |
+| `Fsy` | `$F_s(t):Caso$` | Rosa/rojo |
+| `PID` | `$PID: Tratamiento$` | Morado punteado |
+
+El eje horizontal está identificado como `$t$ [s]` y el vertical como `$F_i(t)$ [V]`. Esta notación corresponde a las **variables de la emulación eléctrica** utilizadas por el cuaderno.
 
 [Volver al contenido](#contenido)
 
@@ -300,59 +319,35 @@ El estudiante debe revisar la conexión entre el cuaderno y Simulink, la extracc
 
 ### 1. Retroalimentación negativa
 
-La planta $G(s)$ se conecta a un controlador PID con retroalimentación negativa unitaria. La señal de error es
+El diseño utiliza la respuesta del individuo sano como referencia. El instructivo define la señal de error:
 
-$$
-e(t)=P_{ao}(t)-P_A(t).
-$$
+$$\boxed{e(t)=x_{\mathrm{control}}(t)-x_{\mathrm{caso}}(t).}$$
 
-La ley de control ideal en el dominio temporal está dada por
+La ley de control PID ideal se representa por:
 
-$$
-u(t)=k_Pe(t)+k_I\int_0^t e(\tau)\,d\tau+k_D\frac{de(t)}{dt},
-$$
+$$u(t)=k_P e(t)+k_I\int_0^t e(\tau)\,d\tau+k_D\frac{de(t)}{dt},$$
 
-y en el dominio de Laplace, formalmente,
+$$K(s)=k_P+\frac{k_I}{s}+k_Ds.$$
 
-$$
-K(s)=k_P+\frac{k_I}{s}+k_Ds.
-$$
+La señal de control se aplica a la representación del caso según el diagrama de la **Figura 5.4**, con la finalidad de aproximar la salida del caso a la respuesta de control. La estructura exacta del lazo debe verificarse en el modelo porque no equivale necesariamente a una retroalimentación unitaria simple de una sola planta.
 
-Para el caso ideal de retroalimentación negativa unitaria, la función de transferencia de lazo cerrado es
+### 2. Sintonización del controlador
 
-$$
-T(s)=\frac{K(s)G(s)}{1+K(s)G(s)}.
-$$
+Utilizar **Tune** del bloque `PID Controller` de Simulink y conservar las ganancias obtenidas:
 
-En una implementación real o mediante el bloque **PID Controller**, deben revisarse la configuración y cualquier filtrado de la acción derivativa.
+| Ganancia | Valor obtenido |
+|---|---|
+| $k_P$ | Pendiente de registrar |
+| $k_I$ | Pendiente de registrar |
+| $k_D$ | Pendiente de registrar |
 
-### 2. Sintonización
+Los criterios de evaluación del instructivo son **estabilidad** y **reducción de la diferencia** entre caso y control. La práctica no especifica valores numéricos obligatorios de tiempo de establecimiento ni sobreimpulso.
 
-Utilizar la opción **Tune** del bloque `PID Controller` de Simulink y registrar las ganancias $k_P$, $k_I$ y $k_D$ obtenidas. La respuesta al escalón de lazo cerrado debe satisfacer ambos requisitos:
+### 3. Comparación de lazo cerrado
 
-$$
-\boxed{t_s \leq 100\,\mathrm{ms}},
-\qquad
-\boxed{M_p \leq 0.10}
-$$
+Repetir la simulación con impulso y comparar $x_{\rm control}(t)$, $x_{\rm caso}(t)$ y la respuesta intervenida con PID. Analizar amplitud, velocidad de respuesta, amortiguamiento y diferencia remanente. Mantener los parámetros y las condiciones iniciales constantes al contrastar modelos.
 
-Para una referencia unitaria, el límite de sobreimpulso corresponde a un pico no mayor de aproximadamente $1.1\,\mathrm{V}$. Conservar la evidencia de la respuesta empleada para verificar los criterios.
-
-**No es obligatorio reproducir exactamente los valores numéricos de las ganancias de referencia:** pueden variar con la versión del software y el procedimiento de sintonización. Lo importante es demostrar cumplimiento de los requisitos y consistencia de los resultados.
-
-### 3. Realización mediante componentes analógicos
-
-El instructivo proporciona las relaciones nominales siguientes para el diseño basado en resistencias y capacitancias:
-
-$$
-k_P=\frac{R_r}{R_e},\qquad
-k_I=\frac{1}{R_eC_r},\qquad
-k_D=C_eR_r.
-$$
-
-Estas expresiones orientan el cálculo inicial y la elección de **valores comerciales** para el controlador con amplificadores operacionales.
-
-> **Verificación necesaria del diseño analógico:** la expresión racional del PID transcrita en el instructivo, al dividirse algebraicamente, contiene en su término proporcional $C_e/C_r+R_r/R_e$, mientras que la relación nominal anterior identifica $k_P=R_r/R_e$. Antes de construir o reportar una equivalencia exacta, verificar la topología del circuito original y cuál es la ganancia proporcional efectiva. No se han supuesto valores de componentes o ganancias que no aparecen especificados en la práctica.
+> El diseño del PID se realiza exclusivamente con fines de simulación y no constituye una propuesta de tratamiento clínico de la atrofia muscular.
 
 [Volver al contenido](#contenido)
 
@@ -361,64 +356,45 @@ Estas expresiones orientan el cálculo inicial y la elección de **valores comer
 <a id="python"></a>
 ## Reproducción en Python
 
-El programa de referencia en Python, ejecutado mediante **Visual Studio Code**, permite comprobar los resultados con una segunda herramienta computacional. Se deben identificar y explicar sus apartados:
+La implementación en **Python**, mediante **Visual Studio Code**, permite contrastar la simulación con una herramienta independiente. El procedimiento debe incluir:
 
-1. Definición del vector temporal.
-2. Construcción de las cuatro señales de entrada.
-3. Definición de la función de transferencia del circuito RLC.
-4. Cálculo de los polos de la planta.
-5. Definición del controlador con las ganancias sintonizadas en Simulink.
-6. Construcción del sistema con retroalimentación negativa.
-7. Simulación de la respuesta forzada.
-8. Generación y almacenamiento de figuras.
+1. Definición del vector de tiempo entre 0 y 10 s.
+2. Parámetros $\alpha$, $C_p$, $C_s$ y resistencias de control y caso.
+3. Definición de las funciones de transferencia correspondientes.
+4. Cálculo de los polos de ambos modelos.
+5. Incorporación de las ganancias $k_P$, $k_I$ y $k_D$ obtenidas con **Tune**.
+6. Construcción del sistema realimentado conforme al diagrama de Simulink.
+7. Obtención de la respuesta al impulso con condiciones equivalentes.
+8. Generación y almacenamiento de las figuras comparativas.
 
-Sustituir los valores de $k_P$, $k_I$ y $k_D$ obtenidos durante la sintonización. Comparar las respuestas de Python con las de MATLAB/Simulink **bajo las mismas entradas, condiciones iniciales y parámetros**.
-
-El código Python de referencia es parte de los recursos entregados para la práctica; el instructivo no exige una librería concreta en su descripción, por lo que las dependencias deben verificarse directamente en los módulos importados por el archivo `.py` suministrado.
+La implementación se conserva en [`Martinez23212806.py`](Martinez23212806.py). La documentación debe especificar las bibliotecas importadas por el script y verificar la correspondencia de sus resultados con MATLAB/Simulink.
 
 [Volver al contenido](#contenido)
 
 ---
 
-<a id="laboratorio"></a>
-## Controlador analógico y laboratorio
+<a id="biologico"></a>
+## Diagrama biológico e interpretación fisiológica
 
-### Materiales y equipo
+### Correspondencia entre el modelo y el sistema musculoesquelético
 
-**Componentes:** resistor de $10\,\mathrm{k}\Omega$, inductor de $1\,\mu\mathrm{H}$, capacitor de $220\,\mu\mathrm{F}$, amplificadores operacionales, resistores y capacitores del controlador, protoboard y cables.
+El instructivo solicita elaborar, con **BioRender** o una herramienta equivalente, un diagrama biológico que relacione el modelo mecánico y la analogía eléctrica con los componentes del sistema musculoesquelético.
 
-**Instrumentos:** generador de funciones, fuente de alimentación simétrica, osciloscopio, multímetro digital y memoria USB para resguardar capturas.
+| Elemento del modelo | Elemento biológico o interpretación |
+|---|---|
+| $F_0(t)$ | Fuerza activa producida por el componente contráctil del músculo |
+| $F(t)$ | Fuerza que el sistema transmite hacia el exterior |
+| $R$ | Comportamiento viscoso del tejido |
+| $C_p$ | Elasticidad pasiva de estructuras musculares y tendinosas |
+| $C_s$ | Elasticidad asociada al componente en serie |
+| $x(t),x_1(t)$ | Desplazamientos de referencia y deformación de las ramas |
+| $\alpha$ | Fracción de la fuerza aplicada vinculada al componente contráctil activo |
 
-### Configuración del generador de funciones
+El diagrama debe identificar como mínimo el **elemento contráctil muscular, las estructuras elásticas musculares, el tendón, el desplazamiento, la fuerza generada y los elementos viscosos y elásticos**. Cada símbolo debe relacionarse con su equivalente eléctrico.
 
-Las señales experimentales se implementan con los siguientes ajustes indicados en el instructivo:
+### Alcance fisiológico
 
-| Aproximación | Forma de onda | Frecuencia | Amplitud | Offset | Ajuste adicional |
-|---|---|---:|---:|---:|---|
-| Escalón | `Pulse` | $50\,\mathrm{mHz}$ | $1\,V_{pp}$ | $500\,\mathrm{mV_{DC}}$ | Duty cycle: $99\%$ |
-| Pulso de $1\,\mathrm{s}$ | `Pulse` | $100\,\mathrm{mHz}$ | $1\,V_{pp}$ | $500\,\mathrm{mV_{DC}}$ | Duty cycle: $10\%$ |
-| Rampa | `Ramp` | $100\,\mathrm{mHz}$ | $1\,V_{pp}$ | $500\,\mathrm{mV_{DC}}$ | Symmetry: $99\%$ |
-| Sinusoidal | `Sine` | $250\,\mathrm{mHz}$ | $2\,V_{pp}$ | $0\,\mathrm{V_{DC}}$ | Sin parámetro adicional |
-
-**Importante:** estos son ajustes para la **aproximación experimental periódica** de las entradas; no deben confundirse con las definiciones ideales empleadas para las simulaciones numéricas.
-
-### 1. Planta RLC en lazo abierto
-
-Montar el circuito equivalente sobre protoboard, aplicar las cuatro señales y utilizar el osciloscopio para registrar simultáneamente **entrada y salida**. Guardar una captura por cada señal. Identificar la ventana de observación utilizada y, cuando sea posible, anotar la escala temporal y de voltaje.
-
-### 2. Controlador y planta en lazo cerrado
-
-Reproducir el diseño del controlador analógico con los valores comerciales elegidos, conectarlo con el circuito RLC y alimentar los amplificadores operacionales mediante
-
-$$
-V_{CC}=+15\,\mathrm{V},\qquad V_{EE}=-15\,\mathrm{V}.
-$$
-
-Aplicar nuevamente las entradas y registrar las respuestas del sistema controlado. Antes de energizar el montaje, verificar polaridades, conexiones, valores nominales y límites eléctricos de los componentes.
-
-### 3. Comparación con la simulación
-
-Analizar posibles discrepancias asociadas con las tolerancias de $R$, $L$ y $C$; los valores comerciales del PID; la no idealidad de los amplificadores operacionales; las limitaciones del instrumental; las aproximaciones de forma de onda; las condiciones iniciales y las simplificaciones del modelo fisiológico.
+La atrofia muscular se representa aquí mediante una **modificación de la resistencia** del circuito equivalente, conforme a la práctica. Se trata de una simplificación para estudiar cambios de respuesta y no de una descripción completa de los cambios anatómicos, celulares o neuromusculares de una atrofia real.
 
 [Volver al contenido](#contenido)
 
@@ -427,35 +403,43 @@ Analizar posibles discrepancias asociadas con las tolerancias de $R$, $L$ y $C$;
 <a id="resultados"></a>
 ## Resultados y verificación cruzada
 
-Las respuestas deben permitir contrastar **entrada, salida de lazo abierto y salida de lazo cerrado** para cada una de las cuatro señales. El instructivo establece una convención gráfica de referencia:
+Las respuestas deben permitir contrastar **entrada, individuo sano, caso de atrofia y sistema controlado** ante el mismo impulso.
 
-- **Amarillo:** entrada aplicada, $P_{ao}(t)$.
-- **Azul:** salida de la planta en lazo abierto, $P_A(t)$.
-- **Verde:** salida en lazo cerrado con PID.
+### Señales que deben presentarse
 
-### Archivos de resultados identificados en el instructivo
+| Señal | Variable identificada | Interpretación |
+|---|---|---|
+| Entrada | `F` | Fuerza aplicada en su analogía eléctrica |
+| Control | `Fsx` | Respuesta de referencia del individuo sano |
+| Caso | `Fsy` | Respuesta del modelo con atrofia simulada |
+| Tratamiento | `PID` | Señal del controlador/tratamiento registrada en el cuaderno |
 
-| Entrada | MATLAB/Simulink | Python | Laboratorio (osciloscopio) |
-|---|---|---|---|
-| Escalón | [`step_matlab.pdf`](step_matlab.pdf) | [`step_python.pdf`](step_python.pdf) | [`stepLC.pdf`](stepLC.pdf) |
-| Pulso | [`impulse_matlab.pdf`](impulse_matlab.pdf) | [`impulse_python.pdf`](impulse_python.pdf) | [`impulseLC.pdf`](impulseLC.pdf) |
-| Rampa | [`ramp_matlab.pdf`](ramp_matlab.pdf) | [`ramp_python.pdf`](ramp_python.pdf) | [`rampLC.pdf`](rampLC.pdf) |
-| Sinusoidal | [`sinusoidal_matlab.pdf`](sinusoidal_matlab.pdf) | [`sinusoidal_python.pdf`](sinusoidal_python.pdf) | [`sinLC.pdf`](sinLC.pdf) |
+**Precaución interpretativa:** el nombre `PID` no demuestra por sí solo que la señal almacenada sea la salida mecánica del caso tratado; conviene comprobar el punto de conexión del bloque `To Workspace` antes de presentarla como desplazamiento o como señal de control.
 
-**Diagrama del sistema físico y el controlador:** [`Multisim_Cerrado2.png`](Multisim_Cerrado2.png). La figura del instructivo fue elaborada originalmente con Multisim; las simulaciones actuales de componentes eléctricos se plantean en **Simscape Electrical**.
+### Archivos y evidencias del repositorio
 
-Los enlaces anteriores utilizan los **nombres de archivos citados por el documento de la práctica**. Funcionarán cuando esos archivos estén incluidos en la raíz del repositorio; si se organizan por carpetas, deberán ajustarse las rutas relativas del README. Los PDF se enlazan para su consulta, dado que GitHub no los presenta como imágenes incrustadas convencionales.
+| Representación | Archivo | Contenido |
+|---|---|---|
+| Análisis matemático | [`Analisis_matematico.pdf`](Analisis_matematico.pdf) | Desarrollo matemático de la práctica |
+| Simulink y Simscape | [`sistema1.slx`](sistema1.slx) | Modelo de simulación |
+| Cuaderno MATLAB | [`Martinez23212806.mlx`](Martinez23212806.mlx) | Ejecución y análisis computacional |
+| Cuaderno exportado | [`cuadernillo_computacional.pdf`](cuadernillo_computacional.pdf) | Evidencia del cuaderno |
+| Resultados MATLAB | [`Musculoesqueletico_matlab.pdf`](Musculoesqueletico_matlab.pdf) | Gráficas de MATLAB |
+| Código Python | [`Martinez23212806.py`](Martinez23212806.py) | Implementación computacional en Python |
+| Resultados Python | [`Musculoesqueletico_python.pdf`](Musculoesqueletico_python.pdf) | Gráficas de Python |
+| Control PID | [`Controlador PID.png`](Controlador%20PID.png) | Evidencia del controlador |
+| Diagrama biológico | [`Diagrama biologico.png`](Diagrama%20biologico.png) | Correspondencia con el sistema fisiológico |
 
 ### Aspectos para discutir
 
-- Coincidencia entre las representaciones por ecuaciones, función de transferencia y circuito físico simulado.
-- Diferencias entre lazo abierto y lazo cerrado y efecto del PID sobre el seguimiento.
-- Cumplimiento de $t_s\le100\,\mathrm{ms}$ y $M_p\le10\%$.
-- Consistencia entre las figuras de MATLAB y Python.
-- Diferencias entre resultados computacionales y señales medidas en el osciloscopio.
-- Fuentes de incertidumbre y limitaciones de la analogía fisiológica.
+- Concordancia entre ecuaciones, función de transferencia y Simscape Electrical.
+- Diferencia entre las respuestas del control y el caso, y efecto de incrementar $R$.
+- Ubicación de los polos y efecto de la resistencia sobre la rapidez de respuesta.
+- Cambios en amplitud, tiempo de respuesta, amortiguamiento y error después del PID.
+- Correspondencia entre las gráficas de MATLAB y Python bajo parámetros idénticos.
+- Diferencias originadas en el tipo de impulso, la configuración del solver o los puntos de medición.
 
-**Resultados del estudiante:** agregar en la versión final del repositorio las ganancias sintonizadas, la evidencia de cumplimiento, las capturas y un comentario interpretativo propio sobre cada familia de respuestas. No se incluyen valores experimentales ni ganancias PID ficticias en esta plantilla.
+**Resultados del estudiante:** incorporar las figuras finales, ganancias sintonizadas y comentarios de interpretación. No se inventan resultados de simulación, gráficas ni parámetros de PID.
 
 [Volver al contenido](#contenido)
 
@@ -466,34 +450,31 @@ Los enlaces anteriores utilizan los **nombres de archivos citados por el documen
 
 ```mermaid
 flowchart TD
-    A[Modelo simplificado de mecanica pulmonar] --> B[Analogia electrica RLC]
-    B --> C[Leyes de Kirchhoff]
-    C --> D[Modelo integro-diferencial y EDO]
+    A[Modelo musculoesqueletico simplificado] --> B[Analogia fuerza-voltaje]
+    B --> C[Ecuaciones de equilibrio y relaciones constitutivas]
+    C --> D[Modelo diferencial]
     C --> E[Funcion de transferencia]
     E --> F[Polos, estabilidad y error]
     D --> G[Simulink: ecuaciones]
     E --> H[Simulink: funcion de transferencia]
     B --> I[Simscape Electrical: circuito]
-    G --> J[Respuesta en lazo abierto]
+    G --> J[Respuestas control y caso]
     H --> J
     I --> J
-    E --> K[PID con retroalimentacion negativa]
-    K --> L[Sintonizacion y respuesta en lazo cerrado]
-    E --> M[Python: simulacion independiente]
-    L --> M
-    L --> N[Diseno de controlador analogico]
-    B --> O[Montaje RLC en laboratorio]
-    N --> P[Montaje experimental en lazo cerrado]
-    O --> Q[Capturas del osciloscopio]
-    P --> Q
-    J --> R[Verificacion cruzada]
-    L --> R
-    M --> R
-    Q --> R
-    R --> S[README, figuras y evidencias en GitHub]
+    J --> K[Error entre control y caso]
+    K --> L[Control PID y sintonizacion Tune]
+    L --> M[Respuesta controlada]
+    E --> N[Python: simulacion independiente]
+    M --> N
+    A --> O[Diagrama biologico]
+    J --> P[Verificacion cruzada]
+    M --> P
+    N --> P
+    O --> P
+    P --> Q[README, figuras y evidencias en GitHub]
 ```
 
-El procedimiento integra la formulación analítica, la experimentación *in silico* y la comprobación con instrumentos de laboratorio.
+El procedimiento articula **modelo mecánico, formulación analítica, analogía eléctrica, simulación *in silico*, control y documentación académica**, sin montaje experimental físico.
 
 [Volver al contenido](#contenido)
 
@@ -502,44 +483,42 @@ El procedimiento integra la formulación analítica, la experimentación *in sil
 <a id="actividades"></a>
 ## Actividades del estudiante
 
-La práctica sigue una secuencia de **reproducción, verificación y documentación**, no un proceso de identificación de parámetros a partir de datos experimentales.
+La práctica sigue una secuencia de **identificación, formulación, simulación, control, verificación y documentación**.
 
 ### Etapa 1. Formulación y análisis
 
-- [ ] Identificar en el circuito $P_{ao}(t)$, $P_A(t)$, $Q(t)$, $R$, $L$ y $C$.
-- [ ] Derivar las ecuaciones integro-diferenciales.
-- [ ] Comprobar la función de transferencia.
-- [ ] Expresar el modelo como sistema de EDO lineales de primer orden.
-- [ ] Calcular el error en estado estacionario ante escalón unitario.
-- [ ] Calcular y representar los polos de la planta.
-- [ ] Elaborar el bosquejo previo de respuesta al escalón.
+- [ ] Identificar $F_0(t)$, $F(t)$, $R$, $C_p$, $C_s$, $x(t)$ y $x_1(t)$.
+- [ ] Explicar las funciones mecánicas de cada elemento y las restricciones entre ramas.
+- [ ] Dibujar y explicar el circuito electroequivalente fuerza–voltaje.
+- [ ] Formular las ecuaciones del sistema y la función de transferencia $X(s)/F(s)$.
+- [ ] Determinar el error en estado estacionario de control y caso.
+- [ ] Calcular los polos y analizar la estabilidad de ambos modelos.
 
 ### Etapa 2. Simulación de la planta
 
-- [ ] Reproducir el modelo por ecuaciones en Simulink.
-- [ ] Reproducir la función de transferencia en Simulink.
-- [ ] Reproducir el circuito equivalente en Simscape Electrical.
-- [ ] Comparar las respuestas a escalón, pulso, rampa y senoide.
+- [ ] Implementar el modelo por ecuaciones en Simulink.
+- [ ] Implementar la función de transferencia en Simulink.
+- [ ] Implementar el circuito equivalente en Simscape Electrical.
+- [ ] Verificar los parámetros diferenciados de control y caso.
+- [ ] Comparar las respuestas al impulso en $0\le t\le10$ s.
 
 ### Etapa 3. Diseño y comprobación del controlador
 
-- [ ] Implementar la retroalimentación negativa con PID.
-- [ ] Sintonizar y registrar $k_P$, $k_I$ y $k_D$.
-- [ ] Verificar el tiempo de establecimiento y el sobreimpulso.
-- [ ] Reproducir las respuestas desde MATLAB y guardarlas en PDF.
-- [ ] Reproducir las respuestas en Python con las mismas ganancias.
-- [ ] Verificar las relaciones algebraicas del controlador analógico.
-- [ ] Seleccionar componentes comerciales y comparar el controlador físico simulado con el ideal.
+- [ ] Construir la retroalimentación del caso tomando el control como referencia.
+- [ ] Incorporar el bloque `PID Controller`.
+- [ ] Sintonizar y registrar $k_P$, $k_I$ y $k_D$ mediante **Tune**.
+- [ ] Verificar la estabilidad y reducción del error.
+- [ ] Comparar las respuestas del control, caso y sistema controlado.
+- [ ] Ejecutar el cuaderno de MATLAB y guardar gráficas PDF.
+- [ ] Reproducir la implementación y figuras en Python.
 
-### Etapa 4. Comprobación experimental y documentación
+### Etapa 4. Documentación y verificación
 
-- [ ] Construir y medir el circuito RLC en lazo abierto.
-- [ ] Construir el circuito controlado en lazo cerrado.
-- [ ] Registrar las cuatro entradas y sus respectivas respuestas.
-- [ ] Comparar resultados de MATLAB, Python y laboratorio.
-- [ ] Incorporar figuras, capturas y fotografías del montaje.
-- [ ] Redactar una interpretación de los resultados y sus diferencias.
-- [ ] Publicar los archivos y un `CITATION.cff` correctamente identificados.
+- [ ] Comparar ecuaciones, función de transferencia, Simscape, MATLAB y Python.
+- [ ] Elaborar un diagrama biológico y relacionar sus componentes con el modelo.
+- [ ] Incorporar las figuras y las ganancias de PID obtenidas.
+- [ ] Redactar la interpretación de resultados y posibles diferencias.
+- [ ] Organizar el repositorio, `README.md` y, cuando corresponda, `CITATION.cff`.
 
 [Volver al contenido](#contenido)
 
@@ -548,35 +527,24 @@ La práctica sigue una secuencia de **reproducción, verificación y documentaci
 <a id="estructura"></a>
 ## Estructura del repositorio
 
-Una organización **sugerida** para la entrega, compatible con los tipos de archivos solicitados, es:
+La estructura corresponde a los **nombres exactos de los archivos cargados en GitHub**:
 
 ```text
 .
-├── README.md                      # Reporte y guía de reproducción
-├── CITATION.cff                   # Datos de citación del repositorio
-├── Apellido_NoControl.mlx         # Cuaderno MATLAB del estudiante
-├── Apellido_NoControl.pdf         # Exportación del cuaderno
-├── modelo_respiratorio.slx        # Modelo Simulink/Simscape
-├── modelo_respiratorio.py         # Implementación Python
-├── pulmonar.pdf                  # Diagrama base del circuito (instructivo)
-├── Multisim_Cerrado2.png         # Diagrama de referencia del controlador
-├── controlador_pid.png           # Captura de sintonización (nombre sugerido)
-├── step_matlab.pdf
-├── impulse_matlab.pdf
-├── ramp_matlab.pdf
-├── sinusoidal_matlab.pdf
-├── step_python.pdf
-├── impulse_python.pdf
-├── ramp_python.pdf
-├── sinusoidal_python.pdf
-├── stepLC.pdf
-├── impulseLC.pdf
-├── rampLC.pdf
-├── sinLC.pdf
-└── evidencias/                   # Fotografías y capturas adicionales
+├── Analisis_matematico.pdf
+├── Controlador PID.png
+├── Diagrama biologico.png
+├── LICENSE
+├── Martinez23212806.mlx
+├── Martinez23212806.py
+├── Musculoesqueletico_matlab.pdf
+├── Musculoesqueletico_python.pdf
+├── README.md
+├── cuadernillo_computacional.pdf
+└── sistema1.slx
 ```
 
-**Criterio de nombres:** los archivos de resultados y diagramas conservan las denominaciones citadas en el instructivo LaTeX. Los nombres de cuaderno, modelo, script y captura del PID son **propuestas organizativas**, ya que sus nombres reales no aparecen especificados en los archivos aportados. Si se utilizan otros nombres o subcarpetas, actualizar las rutas del README y no eliminar evidencias requeridas.
+**Criterio de nombres:** las rutas y las mayúsculas/minúsculas se conservan tal como aparecen en el repositorio. Si se incorpora el archivo `CITATION.cff`, debe añadirse en la raíz junto al `README.md`.
 
 [Volver al contenido](#contenido)
 
@@ -587,18 +555,19 @@ Una organización **sugerida** para la entrega, compatible con los tipos de arch
 
 ### Software
 
-- **MATLAB** y **Simulink**, con el modelo y el cuaderno de referencia.
-- **Simscape Electrical**, para construir el circuito de componentes eléctricos.
-- Herramientas de Simulink para diseño y sintonización del bloque **PID Controller**.
-- **Python** y **Visual Studio Code** para ejecutar el programa suministrado.
-- Las bibliotecas Python que importe efectivamente el código de referencia.
-- **Git y GitHub** para organizar y presentar el repositorio de la práctica.
+- **MATLAB** para la ejecución del cuaderno `.mlx`, análisis de señales y exportación de figuras.
+- **Simulink** para implementar ecuaciones, funciones de transferencia y el lazo PID.
+- **Simscape Electrical** para representar la analogía mediante elementos eléctricos.
+- **PID Controller / Tune** para la sintonización de ganancias.
+- **Python** y **Visual Studio Code** para realizar una verificación independiente.
+- **BioRender** o una herramienta equivalente para crear el diagrama biológico.
+- **Git y GitHub** para documentar y conservar el trabajo realizado.
 
-Para el ejemplo opcional de MATLAB de esta guía que utiliza `tf` y `pole`, es necesario disponer de las funciones correspondientes de **Control System Toolbox**. Las versiones mínimas del software no se especifican en el instructivo.
+Para los cálculos en Python deben instalarse las librerías utilizadas en el script definitivo. El instructivo no especifica versiones mínimas del software.
 
-### Recursos de laboratorio
+### Recursos de simulación
 
-Circuito RLC y componentes del PID, amplificadores operacionales, protoboard, alimentación simétrica, generador de funciones, osciloscopio, multímetro, cables y medio de almacenamiento para las capturas.
+Modelo mecánico de referencia (Figura 5.3), diagrama de control (Figura 5.4), parámetros de control y caso, archivo de Simulink, cuaderno de MATLAB y capturas de resultados. **No se requiere un montaje de laboratorio**: el instructivo establece que la práctica es *in silico*.
 
 [Volver al contenido](#contenido)
 
@@ -609,35 +578,38 @@ Circuito RLC y componentes del PID, amplificadores operacionales, protoboard, al
 
 ### Secuencia de reproducción
 
-1. Consultar el [repositorio general de la asignatura](https://github.com/DrPaulValle/MSF-IBF1020) y descargar los archivos proporcionados para la práctica.
-2. Verificar la topología del circuito, los valores de $R$, $L$, $C$ y las condiciones iniciales.
-3. Derivar el modelo y completar el análisis de polos y error en estado estacionario.
-4. Ejecutar los modelos de Simulink y Simscape con las cuatro entradas definidas.
-5. Sintonizar el PID y registrar las ganancias y la evidencia de los criterios de diseño.
-6. Ejecutar el cuaderno MATLAB y exportar las cuatro respuestas.
-7. Sustituir las ganancias en Python, reproducir las señales y exportar las cuatro figuras.
-8. Verificar la implementación del PID mediante componentes y realizar los montajes experimentales en lazo abierto y cerrado.
-9. Capturar las respuestas del osciloscopio para las cuatro señales.
-10. Comparar resultados, explicar diferencias y completar este README con las evidencias propias.
-11. Publicar el repositorio con sus fuentes y `CITATION.cff`.
+1. Consultar el [repositorio general de la asignatura](https://github.com/DrPaulValle/MSF-IBF1020) y el instructivo de la práctica 3.
+2. Identificar las ramas mecánicas, desplazamientos y fuerzas de la Figura 5.3.
+3. Construir la analogía fuerza–voltaje y desarrollar las ecuaciones de equilibrio.
+4. Obtener $G(s)=X(s)/F(s)$ y comprobar el punto de salida utilizado en Simulink.
+5. Utilizar las resistencias de referencia: **100 Ω (control)** y **10 kΩ (caso)**.
+6. Ejecutar las representaciones por ecuaciones, función de transferencia y Simscape.
+7. Calcular polos y error en estado estacionario para cada condición.
+8. Ejecutar la simulación al impulso en un intervalo de 10 s y contrastar respuestas.
+9. Sintonizar el PID mediante **Tune** y conservar ganancias y evidencia.
+10. Ejecutar el cuaderno de MATLAB y generar figuras de las señales.
+11. Reproducir las respuestas en Python con las mismas condiciones.
+12. Elaborar el diagrama biológico y realizar la verificación cruzada.
+13. Publicar el repositorio con `README.md`, las evidencias y, opcionalmente, `CITATION.cff`.
 
 ### Resultados mínimos esperados
 
 | Entregable | Evidencia solicitada |
 |---|---|
-| Formulación matemática | Ecuaciones, función de transferencia y modelo de primer orden |
-| Análisis del sistema | Cálculo de polos, estabilidad, error y bosquejo de respuesta |
-| Simulaciones | Modelo `.slx` y respuestas en lazo abierto y cerrado |
-| Sintonización | Ganancias PID, figura de respuesta y verificación de $t_s$ y $M_p$ |
-| MATLAB | Cuaderno `.mlx`, exportación `.pdf` y cuatro figuras |
-| Python | Código `.py` y cuatro figuras |
-| Controlador analógico | Cálculo de componentes, diseño y comparación con el PID ideal |
-| Laboratorio | Fotografías del montaje y cuatro resultados de osciloscopio |
-| Documentación | `README.md`, `CITATION.cff` e interpretación de los resultados |
+| Identificación del modelo | Fuerzas, desplazamientos, compliancias y amortiguamiento |
+| Analogía eléctrica | Esquema y correspondencia fuerza–voltaje |
+| Formulación matemática | Ecuaciones y función de transferencia |
+| Análisis del sistema | Polos, estabilidad y error estacionario de control y caso |
+| Simulink y Simscape | Representaciones equivalentes y respuestas al impulso |
+| PID | Ganancias obtenidas con Tune y comparación en lazo cerrado |
+| MATLAB | Cuaderno `.mlx` y gráficas exportadas |
+| Python | Código `.py` y figuras comparativas |
+| Diagrama biológico | Relación de modelo mecánico y eléctrico con estructuras reales |
+| Documentación | `README.md`, `CITATION.cff`, conclusiones y evidencias |
 
 ### Criterios de presentación académica
 
-En el README final debe distinguirse entre **resultados de referencia reproducidos**, **mediciones experimentales propias** y **modificaciones realizadas por el estudiante**. La ejecución de scripts y la generación de figuras, por sí solas, no sustituyen la discusión del comportamiento fisiológico, matemático y eléctrico del sistema.
+El README final debe distinguir entre **expresiones del instructivo**, **elementos identificados en los archivos aportados**, **predicciones calculadas** y **resultados obtenidos efectivamente de una simulación**. Las figuras, ganancias y conclusiones deben corresponder a ejecuciones verificables. Si se modifica la resistencia, el circuito, el PID o el punto de medición, debe quedar documentado.
 
 [Volver al contenido](#contenido)
 
@@ -646,7 +618,7 @@ En el README final debe distinguirse entre **resultados de referencia reproducid
 <a id="referencias"></a>
 ## Referencias
 
-[1] M. C. Khoo, *Physiological Control Systems: Analysis, Simulation, and Estimation*, 2nd ed., IEEE Press, 2018, sección 4, p. 93.
+[1] M. C. Khoo, *Physiological Control Systems: Analysis, Simulation, and Estimation*, 2nd ed., IEEE Press, 2018.
 
 [2] F. C. Hoppensteadt y C. S. Peskin, *Modeling and Simulation in Medicine and the Life Sciences*, Springer.
 
@@ -664,4 +636,4 @@ En el README final debe distinguirse entre **resultados de referencia reproducid
 
 ## Uso académico
 
-Este repositorio se utiliza como evidencia de una práctica introductoria de **Modelado de Sistemas Fisiológicos**. El procedimiento se fundamenta en materiales y resultados de referencia proporcionados por la asignatura. Su finalidad es desarrollar habilidades de interpretación, reproducción computacional, verificación experimental y documentación técnica; cualquier cambio de parámetros, estructura del controlador o procedimiento debe identificarse y justificarse.
+Este repositorio documenta la **Práctica 3: Modelado y control del sistema musculoesquelético**. El procedimiento se fundamenta en el instructivo de la asignatura y en los archivos de MATLAB/Simulink proporcionados. Su propósito es desarrollar habilidades de análisis fisiológico, modelado matemático, simulación, sintonización de controladores y verificación cruzada. Las intervenciones del modelo son *in silico*, y cualquier cambio de parámetros, estructura o procedimiento debe identificarse y justificarse.
