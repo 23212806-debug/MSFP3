@@ -380,6 +380,12 @@ La implementación se conserva en [`Martinez23212806.py`](Martinez23212806.py). 
 
 El instructivo solicita elaborar, con **BioRender** o una herramienta equivalente, un diagrama biológico que relacione el modelo mecánico y la analogía eléctrica con los componentes del sistema musculoesquelético.
 
+### Diagrama biológico del sistema musculoesquelético
+
+![Diagrama biológico del sistema musculoesquelético: elementos contráctiles, elásticos y viscosos](Diagrama%20biologico.png)
+
+*Figura: correspondencia entre los elementos del modelo mecánico, la anatomía musculoesquelética y las condiciones de control y atrofia muscular. Elaborado en BioRender.*
+
 | Elemento del modelo | Elemento biológico o interpretación |
 |---|---|
 | $F_0(t)$ | Fuerza activa producida por el componente contráctil del músculo |
