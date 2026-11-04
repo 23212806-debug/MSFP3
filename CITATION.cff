@@ -1,6 +1,3 @@
-# CITATION.cff — Práctica 3: Modelado y control del sistema musculoesquelético
-# Basado en la estructura del CITATION.cff de la práctica anterior.
-
 cff-version: 1.2.0
 title: >-
   Práctica 3: Modelado y control del sistema musculoesquelético
@@ -13,6 +10,7 @@ authors:
     family-names: Martinez Lozano
     email: 23212806@tectijuana.edu.mx
     affiliation: TecNM / IT Tijuana
+repository-code: 'https://github.com/23212806-debug/MSFP3'
 keywords:
   - Sistema musculoesquelético
   - Atrofia muscular
