@@ -134,11 +134,11 @@ $$\frac{d}{dt}\big[x(t)-x_1(t)\big].$$
 |---|---:|---:|---|
 | $F(t)$ | 1 | 1 | V (analogía eléctrica) |
 | $\alpha$ | 0.25 | 0.25 | Adimensional |
-| $C_s$ | 10 | 10 | $\mu$F |
-| $C_p$ | 100 | 100 | $\mu$F |
-| $R$ | 100 $\Omega$ | 10 k$\Omega$ | Resistencia eléctrica |
+| $C_s$ | 10 | 10 | µF |
+| $C_p$ | 100 | 100 | µF |
+| $R$ | 100 | 10 000 | Ω |
 
-**Corrección de lectura de la tabla:** la fila de $R$ del instructivo indica **100 $\Omega$ para control** y **10 k$\Omega$ para caso**. En el archivo `sistema1.slx` aportado, la función de transferencia incorpora **10 k$\Omega$** en su expresión tanto para el bloque etiquetado *Control* como para el bloque etiquetado *Caso*. Esta discrepancia entre el instructivo y el archivo suministrado debe verificarse al configurar definitivamente las dos condiciones; no se presupone que ambas representan parámetros diferenciados.
+**Condiciones del modelo:** de acuerdo con el instructivo, el individuo sano (**control**) se representa con una resistencia de **100 Ω**, mientras que el caso de atrofia muscular (**caso**) utiliza **10 kΩ**. Los demás parámetros permanecen constantes. El incremento de resistencia permite comparar el efecto del amortiguamiento sobre la respuesta dinámica.
 
 > **Alcance de la analogía:** los valores de resistencia y capacitancia corresponden a la emulación eléctrica. La equivalencia entre fuerza, velocidad, desplazamiento y variables eléctricas mantiene la estructura del sistema, pero no implica convertir unidades fisiológicas en unidades eléctricas sin establecer escalas.
 
@@ -184,7 +184,7 @@ num = [100*10e-6 1-0.25];
 den = [100*(100e-6+10e-6) 1];
 ```
 
-Los coeficientes anteriores son los que aparecen literalmente en el `.slx`. Aunque las etiquetas aluden a **100**, la implementación visible no diferencia todavía las resistencias nominales del control y el caso conforme a la tabla de la práctica. La función representa una **dinámica de primer orden con un cero**. Para reproducir ambas condiciones, verificar y actualizar $R$ según corresponda.
+Los coeficientes anteriores ilustran la función de transferencia para **$R=100\,\Omega$ (control)**. Para el **caso** se utiliza $R=10\,000\,\Omega$, manteniendo los valores de $C_p$, $C_s$ y $\alpha$. La función representa una **dinámica de primer orden con un cero**.
 
 ### 4. Representación diferencial asociada a la función de transferencia del archivo
 
@@ -281,21 +281,21 @@ Se contrastan las tres representaciones solicitadas:
 
 ### Archivos y señales identificados en los archivos aportados
 
-En el archivo `sistema1(1).slx` aparecen los subsistemas **Control** y **Caso**, componentes de Simscape, bloques de función de transferencia y un bloque `PID Controller`. Los bloques `To Workspace` registran las señales:
+En el archivo `sistema1.slx` aparecen los subsistemas **Control** y **Caso**, componentes de Simscape, bloques de función de transferencia y un bloque `PID Controller`. Los bloques `To Workspace` registran las señales:
 
 1. **`F`**: señal de entrada $F(t)$.
 2. **`Fsx`**: respuesta del control.
 3. **`Fsy`**: respuesta del caso.
 4. **`PID`**: señal correspondiente al tratamiento/controlador.
 
-El cuaderno `Martinez23212806(2).mlx` ejecuta:
+El cuaderno `Martinez23212806.mlx` ejecuta:
 
 ```matlab
 x1 = sim('sistema1.slx',parameters);
 plotsignals(x1.t,x1.F,x1.Fsx,x1.Fsy,x1.PID)
 ```
 
-Para reproducir la práctica, el archivo del modelo debe guardarse como **`sistema1.slx`** o actualizarse su nombre en el código. Los nombres de variables se han respetado de acuerdo con el cuaderno proporcionado.
+El cuaderno ejecuta el modelo **`sistema1.slx`** y mantiene los nombres de las variables utilizados para generar la gráfica.
 
 ### Convención gráfica del cuaderno
 
@@ -367,7 +367,7 @@ La implementación en **Python**, mediante **Visual Studio Code**, permite contr
 7. Obtención de la respuesta al impulso con condiciones equivalentes.
 8. Generación y almacenamiento de las figuras comparativas.
 
-La documentación debe especificar las bibliotecas realmente importadas por el archivo `.py`. No se adjuntó un script Python a estos materiales, por lo que no se atribuyen resultados concretos a esa implementación.
+La implementación se conserva en [`Martinez23212806.py`](Martinez23212806.py). La documentación debe especificar las bibliotecas importadas por el script y verificar la correspondencia de sus resultados con MATLAB/Simulink.
 
 [Volver al contenido](#contenido)
 
@@ -416,17 +416,19 @@ Las respuestas deben permitir contrastar **entrada, individuo sano, caso de atro
 
 **Precaución interpretativa:** el nombre `PID` no demuestra por sí solo que la señal almacenada sea la salida mecánica del caso tratado; conviene comprobar el punto de conexión del bloque `To Workspace` antes de presentarla como desplazamiento o como señal de control.
 
-### Evidencia y figuras por incorporar
+### Archivos y evidencias del repositorio
 
-| Representación | Evidencia prevista | Estado |
+| Representación | Archivo | Contenido |
 |---|---|---|
-| Ecuaciones implementadas en Simulink | Modelo y respuesta al impulso | Por documentar |
-| Función de transferencia en Simulink | Modelo y respuesta al impulso | Modelo suministrado; validar parámetros |
-| Simscape Electrical | Circuito electroequivalente y respuesta | Modelo suministrado |
-| Cuaderno MATLAB | Gráfica `plotsignals` y archivo `.mlx` | Cuaderno suministrado |
-| Python | Gráfica de control, caso y sistema controlado | Por incorporar |
-| PID | Ganancias y comparación antes/después | Por incorporar |
-| Diagrama biológico | Figura y correspondencia de elementos | Por incorporar |
+| Análisis matemático | [`Analisis_matematico.pdf`](Analisis_matematico.pdf) | Desarrollo matemático de la práctica |
+| Simulink y Simscape | [`sistema1.slx`](sistema1.slx) | Modelo de simulación |
+| Cuaderno MATLAB | [`Martinez23212806.mlx`](Martinez23212806.mlx) | Ejecución y análisis computacional |
+| Cuaderno exportado | [`cuadernillo_computacional.pdf`](cuadernillo_computacional.pdf) | Evidencia del cuaderno |
+| Resultados MATLAB | [`Musculoesqueletico_matlab.pdf`](Musculoesqueletico_matlab.pdf) | Gráficas de MATLAB |
+| Código Python | [`Martinez23212806.py`](Martinez23212806.py) | Implementación computacional en Python |
+| Resultados Python | [`Musculoesqueletico_python.pdf`](Musculoesqueletico_python.pdf) | Gráficas de Python |
+| Control PID | [`Controlador PID.png`](Controlador%20PID.png) | Evidencia del controlador |
+| Diagrama biológico | [`Diagrama biologico.png`](Diagrama%20biologico.png) | Correspondencia con el sistema fisiológico |
 
 ### Aspectos para discutir
 
@@ -516,7 +518,7 @@ La práctica sigue una secuencia de **identificación, formulación, simulación
 - [ ] Elaborar un diagrama biológico y relacionar sus componentes con el modelo.
 - [ ] Incorporar las figuras y las ganancias de PID obtenidas.
 - [ ] Redactar la interpretación de resultados y posibles diferencias.
-- [ ] Organizar el repositorio, `README.md` y `CITATION.cff`.
+- [ ] Organizar el repositorio, `README.md` y, cuando corresponda, `CITATION.cff`.
 
 [Volver al contenido](#contenido)
 
@@ -525,25 +527,24 @@ La práctica sigue una secuencia de **identificación, formulación, simulación
 <a id="estructura"></a>
 ## Estructura del repositorio
 
-Una organización **sugerida** para la entrega, respetando los nombres de los archivos proporcionados, es:
+La estructura corresponde a los **nombres exactos de los archivos cargados en GitHub**:
 
 ```text
 .
-├── README.md                         # Reporte y guía de reproducción
-├── CITATION.cff                      # Datos de citación del repositorio
-├── Martinez23212806(2).mlx          # Cuaderno MATLAB del estudiante
-├── sistema1.slx                      # Modelo Simulink/Simscape
-├── musculoesqueletico.py            # Reproducción en Python (por agregar)
-├── diagrama_biologico.png           # Diagrama de correspondencias (por agregar)
-├── resultados/
-│   ├── impulso_matlab.pdf           # Respuesta del cuaderno (por agregar)
-│   ├── impulso_python.pdf           # Respuesta en Python (por agregar)
-│   ├── polos_control_caso.pdf        # Análisis de estabilidad (por agregar)
-│   └── respuesta_pid.pdf            # Comparación del PID (por agregar)
-└── evidencias/                       # Capturas y material complementario
+├── Analisis_matematico.pdf
+├── Controlador PID.png
+├── Diagrama biologico.png
+├── LICENSE
+├── Martinez23212806.mlx
+├── Martinez23212806.py
+├── Musculoesqueletico_matlab.pdf
+├── Musculoesqueletico_python.pdf
+├── README.md
+├── cuadernillo_computacional.pdf
+└── sistema1.slx
 ```
 
-**Criterio de nombres:** `Martinez23212806(2).mlx` corresponde al cuaderno adjunto y `sistema1.slx` al nombre invocado por el código MATLAB. El modelo original cargado se llama `sistema1(1).slx`; para ejecutarlo sin editar el cuaderno hay que renombrarlo a `sistema1.slx`. El resto de los archivos de la estructura son **rutas propuestas** y no se presentan como entregables ya existentes.
+**Criterio de nombres:** las rutas y las mayúsculas/minúsculas se conservan tal como aparecen en el repositorio. Si se incorpora el archivo `CITATION.cff`, debe añadirse en la raíz junto al `README.md`.
 
 [Volver al contenido](#contenido)
 
@@ -581,7 +582,7 @@ Modelo mecánico de referencia (Figura 5.3), diagrama de control (Figura 5.4), p
 2. Identificar las ramas mecánicas, desplazamientos y fuerzas de la Figura 5.3.
 3. Construir la analogía fuerza–voltaje y desarrollar las ecuaciones de equilibrio.
 4. Obtener $G(s)=X(s)/F(s)$ y comprobar el punto de salida utilizado en Simulink.
-5. Revisar las resistencias **100 $\Omega$ (control)** y **10 k$\Omega$ (caso)** frente a la parametrización del modelo cargado.
+5. Utilizar las resistencias de referencia: **100 Ω (control)** y **10 kΩ (caso)**.
 6. Ejecutar las representaciones por ecuaciones, función de transferencia y Simscape.
 7. Calcular polos y error en estado estacionario para cada condición.
 8. Ejecutar la simulación al impulso en un intervalo de 10 s y contrastar respuestas.
@@ -589,7 +590,7 @@ Modelo mecánico de referencia (Figura 5.3), diagrama de control (Figura 5.4), p
 10. Ejecutar el cuaderno de MATLAB y generar figuras de las señales.
 11. Reproducir las respuestas en Python con las mismas condiciones.
 12. Elaborar el diagrama biológico y realizar la verificación cruzada.
-13. Publicar el repositorio con `README.md`, `CITATION.cff` y las evidencias.
+13. Publicar el repositorio con `README.md`, las evidencias y, opcionalmente, `CITATION.cff`.
 
 ### Resultados mínimos esperados
 
@@ -636,3 +637,4 @@ El README final debe distinguir entre **expresiones del instructivo**, **element
 ## Uso académico
 
 Este repositorio documenta la **Práctica 3: Modelado y control del sistema musculoesquelético**. El procedimiento se fundamenta en el instructivo de la asignatura y en los archivos de MATLAB/Simulink proporcionados. Su propósito es desarrollar habilidades de análisis fisiológico, modelado matemático, simulación, sintonización de controladores y verificación cruzada. Las intervenciones del modelo son *in silico*, y cualquier cambio de parámetros, estructura o procedimiento debe identificarse y justificarse.
+
