@@ -1,4 +1,4 @@
-"""Práctica 3: SISTEMA MUSCULOESQUELÉTICO
+"""Práctica 3: Modelado y control del sistema musculoesqueletico
 Departamento de Ingeniería Eléctrica y Electrónica, Ingeniería Biomédica
 Tecnológico Nacional de México [TecNM - Tijuana]
 Blvd. Alberto Limón Padilla s/n, C.P. 22454, Tijuana, B.C., México
